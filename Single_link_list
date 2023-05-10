@@ -39,7 +39,12 @@ int main(void) {
     memset(n3, 0, sizeof(struct entry));
     n3->data = 30;
     strcpy(n3->name, "item-03");
-    SLIST_INSERT_HEAD(&head,n3,entries);     
+    SLIST_INSERT_HEAD(&head, n3, entries);
+
+
+    SLIST_REMOVE_HEAD(&head,entries);    
+    //SLIST_REMOVE(&head,n3,entry,entries);
+    free(n3);
 
     // chi su dung duy nhat phan tu nay trong slist_first
     n4 = malloc(sizeof(struct entry));
