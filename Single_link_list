@@ -1,0 +1,65 @@
+#include <stddef.h> 
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <sys/queue.h>
+
+struct entry {
+    int data;
+    char name[20];
+    SLIST_ENTRY(entry) entries;             /* Singly linked List. */
+};
+
+SLIST_HEAD(slisthead, entry);
+
+int main(void) {
+    struct entry* n1, * n2, * n3, * np, *n4;
+    struct slisthead head;                  /* Singly linked List
+                                               head. */
+
+
+    SLIST_INIT(&head);                      /* Initialize the queue. */
+
+
+    n1 = malloc(sizeof(struct entry));      /* Insert at the head. */
+    memset(n1,0,sizeof(struct entry));
+    n1->data = 10;
+    strcpy(n1->name, "item-01");
+    SLIST_INSERT_HEAD(&head, n1, entries);
+
+
+    n2 = malloc(sizeof(struct entry));      /* Insert after. */
+    memset(n2, 0, sizeof(struct entry));
+    n2->data = 20;
+    strcpy(n2->name, "item-02");
+    SLIST_INSERT_AFTER(n1, n2, entries);
+
+
+    //n3 = SLIST_FIRST(&head);
+    n3 = malloc(sizeof(struct entry));
+    memset(n3, 0, sizeof(struct entry));
+    n3->data = 30;
+    strcpy(n3->name, "item-03");
+    SLIST_INSERT_HEAD(&head,n3,entries);     
+
+    // chi su dung duy nhat phan tu nay trong slist_first
+    n4 = malloc(sizeof(struct entry));
+    memset(n4, 0, sizeof(struct entry));
+    n4->data = 40;
+    strcpy(n4->name, "item-04");
+    SLIST_INSERT_HEAD(&head, n4, entries);
+
+    /* Forward traversal. */
+    SLIST_FOREACH(np, &head, entries)
+    printf("id:%d\t name:%s\n",np->data,np->name);
+
+
+    while (!SLIST_EMPTY(&head)) {           /* List Deletion. */
+        n1 = SLIST_FIRST(&head);
+        SLIST_REMOVE_HEAD(&head, entries);
+        free(n1);
+    }
+    SLIST_INIT(&head);
+
+    exit(EXIT_SUCCESS);
+   
+}
