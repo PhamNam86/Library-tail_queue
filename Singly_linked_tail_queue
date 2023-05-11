@@ -1,0 +1,77 @@
+#include <stddef.h> 
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <sys/queue.h>
+
+struct entry {
+    int id;
+    char name[20];
+    STAILQ_ENTRY(entry) entries;        /* Singly linked tail queue. */
+};
+
+STAILQ_HEAD(stailhead, entry);
+
+int main(void) {
+    struct entry* n1, * n2, * n3, * np;
+    struct stailhead head;              /* Singly linked tail queue head. */
+
+    STAILQ_INIT(&head);              
+
+    n1 = malloc(sizeof(struct entry));
+    memset(n1, 0, sizeof(struct entry));
+    n1->id = 20;
+    strcpy(n1->name,"halo");
+    STAILQ_INSERT_HEAD(&head, n1, entries);
+
+    
+
+    n2 = malloc(sizeof(struct entry));  
+    memset(n2, 0, sizeof(struct entry));
+    n2->id = 30;
+    strcpy(n2->name, "belo");
+    STAILQ_INSERT_AFTER(&head, n1, n2, entries);
+    
+    n1 = malloc(sizeof(struct entry)); 
+    memset(n1,0,sizeof(struct entry)); 
+    n1->id = 10;
+    strcpy(n1->name, "hello world");
+    STAILQ_INSERT_TAIL(&head,n1,entries);
+
+    for (int i = 1; i < 5; i++){
+        n3 = malloc(sizeof(struct entry));
+        n3->id = i;
+        STAILQ_INSERT_HEAD(&head, n3, entries);
+        
+        
+        n3 = malloc(sizeof(struct entry));
+        n3->id = i;
+        STAILQ_INSERT_TAIL(&head, n3, entries);
+    }
+
+    n2 = malloc(sizeof(struct entry));
+    memset(n2, 0, sizeof(struct entry));
+    n2->id = 40;
+    strcpy(n2->name, "haiz!!!");
+    STAILQ_INSERT_TAIL(&head, n2, entries);
+
+    n2 = malloc(sizeof(struct entry));
+    memset(n2, 0, sizeof(struct entry));
+    n2->id = 50;
+    strcpy(n2->name, "firstly");
+    STAILQ_INSERT_HEAD(&head, n2, entries);
+    
+    STAILQ_FOREACH(np, &head, entries)
+    printf("id = %d\t name: %s\n",np->id,np->name);
+   
+    n1 = STAILQ_FIRST(&head);
+    while (n1 != NULL){
+        n2 = STAILQ_NEXT(n1, entries);
+        free(n1);
+        n1 = n2;
+    }
+    STAILQ_INIT(&head);
+
+
+    exit(EXIT_SUCCESS);
+    
+}
