@@ -1,0 +1,129 @@
+#include <stdio.h>
+#include <string.h>
+
+struct node 
+{
+    struct node* pre;
+    int data;
+    //char name[50];
+    struct node* next;
+};
+
+struct node* add_data(struct node** head, struct node** tail, struct node* atda)
+{
+    struct node* temp = malloc(sizeof(struct node));
+
+    if(NULL == *head) 
+    {
+        *head = atda;
+        return atda;
+    }
+
+    temp = *tail;
+
+        temp->next = atda;
+        atda->pre = temp;
+        
+    return *tail;
+}
+
+
+int main() 
+{
+    struct node* head = NULL; 
+    struct node* tail = NULL;
+    struct node* number;
+    
+    //struct node* head = malloc(sizeof(struct node));
+/*  
+    head->pre = NULL;
+    head->data = 1000;
+    head->next = NULL;
+*/
+    struct node* tmp;
+    
+    int n;
+
+    printf("Enter number of n:");
+    scanf("%d", &n);
+    
+    if (n == 0) 
+    {
+        return 0;
+    }
+    
+    else 
+    {
+    int number, i;
+    i = 0;
+        while(i < n)
+        {
+            
+            printf("Enter number %d:", i + 1);
+            scanf("%d", &number);
+            i++;
+
+            tmp = malloc(sizeof(struct node));
+            memset(tmp,0,sizeof(struct node));
+            
+            tmp->data = number;
+            add_data(&head, &tail, tmp);
+            tail = tmp;
+            
+            
+        }
+     
+    }
+
+    
+
+    struct node* deah = head;
+
+            while(NULL != deah)
+            {
+
+                printf("data = %d\n", deah->data);
+                deah = deah->next;
+                
+            }
+
+    /*
+    tmp = malloc(sizeof(struct node));
+    memset(tmp,0,sizeof(struct node));
+    tmp->data = 34;
+    strcpy(tmp->name, "Duong Tam");
+    add_data(&head,&tail,tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(struct node));
+    memset(tmp,0,sizeof(struct node));
+    tmp->data = 45; 
+    strcpy(tmp->name, "Bi Bi Dong");
+    add_data(&head, &tail,tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(struct node));
+    memset(tmp, 0, sizeof(struct node));
+    tmp->data = 25;
+    strcpy(tmp->name, "Lieu Nhi Long");
+    add_data(&head, &tail, tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(struct node));
+    memset(tmp, 0, sizeof(struct node));
+    tmp->data = 9; visual 
+    strcpy(tmp->name, "Thien Nham Tuyet");
+    add_data(&head, &tail,tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(struct node));
+    memset(tmp, 0, sizeof(struct node));
+    tmp->data = 10;
+    strcpy(tmp->name, "Bich Dao");
+    add_data(&head, &tail, tmp);
+    tail = tmp;
+    */
+    
+
+    return 0; 
+}
