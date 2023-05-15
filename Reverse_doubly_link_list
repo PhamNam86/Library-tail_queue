@@ -1,0 +1,235 @@
+#include <stdio.h>
+#include <string.h>
+
+struct node 
+{
+    struct node* pre;
+    int id;
+    char name[50];
+    struct node* next;
+};
+
+struct node* add_doubly_link_list(struct node** head, struct node** tail, struct node* data)
+{
+    struct node* temp = malloc(sizeof(struct node));
+
+    if(NULL == *head) 
+    {
+        *head = data;
+        return *head;
+    }
+
+    temp = *tail;
+
+        temp->next = data;
+        data->pre = temp;
+        
+    return *tail;
+}
+
+struct node* delete_doubly_link_list(struct node** head, struct node** tail, struct node* data) 
+{
+    struct node* tmp1, * tmp2;
+
+    if(data == *head) 
+    {
+        
+        if(NULL != (*head)->next) 
+        {
+            (*head)->next->pre = NULL;
+            *head = (*head)->next;
+            return *head;
+        }
+        else 
+        {
+            (*tail) = NULL; 
+            return *head;
+        }
+        
+        free(data);
+    }
+
+    if (data == *tail)
+    {
+        if (NULL != (*tail)->pre)
+        {
+            (*tail)->pre->next = NULL; 
+            return *head;
+          
+        }
+        else
+        {
+            (*head) = NULL; 
+            return *head;
+
+        }
+ 
+        free(data);
+    }
+
+    tmp1 = data->next;
+    tmp2 = data->pre;
+
+    tmp1->pre = tmp2;
+    tmp2->next = tmp1;
+
+    free(data);
+    return *head;
+}
+
+struct node* reverse(struct node** my_head) 
+{
+    struct node* ptr1, * ptr2;
+
+    ptr1 = *my_head;
+    ptr2 = ptr1->next;
+    
+    ptr1->next = NULL;
+    ptr1->pre = ptr2;
+
+    while(ptr2 != NULL) 
+    {
+        ptr2->pre = ptr2->next;
+        ptr2->next = ptr1;
+        ptr1 = ptr2;
+        ptr2 = ptr2->pre;
+
+    }
+    *my_head = ptr1;
+    return *my_head;
+}
+
+int main() 
+{
+    struct node* head = NULL; 
+    struct node* tail = NULL;
+    //struct node* number;
+
+    struct node* tmp, *tmp2, *tmp3,*tmp4;
+    
+    tmp = malloc(sizeof(struct node));
+    memset(tmp,0,sizeof(struct node));
+    tmp->id = 34;
+    strcpy(tmp->name, "item-01");
+    add_doubly_link_list(&head,&tail,tmp);
+    tail = tmp;
+    
+    
+
+    tmp2 = malloc(sizeof(struct node));
+    memset(tmp2, 0, sizeof(struct node));
+    tmp2->id = 45;
+    strcpy(tmp2->name,"item-02");
+    add_doubly_link_list(&head,&tail,tmp2);
+    tail = tmp2;
+
+    tmp3 = malloc(sizeof(struct node));
+    memset(tmp3, 0, sizeof(struct node));
+    tmp3->id = 9;
+    strcpy(tmp3->name, "item-03");
+    add_doubly_link_list(&head, &tail, tmp3);
+    tail = tmp3;
+
+    tmp4 = malloc(sizeof(struct node));
+    memset(tmp4, 0, sizeof(struct node));
+    tmp4->id = 10;
+    strcpy(tmp4->name, "item-04");
+    add_doubly_link_list(&head, &tail, tmp4);
+    tail = tmp4;
+
+    reverse(&head);
+
+    //delete_doubly_link_list(&head,&tail,tmp);
+
+
+    //struct node* head = malloc(sizeof(struct node));
+/*  
+
+    struct node* tmp;
+    
+    int n;
+
+    printf("Enter number of n:");
+    scanf("%d", &n);
+    
+    if (n == 0) 
+    {
+        return 0;
+    }
+    
+    else 
+    {
+    int number, i;
+    i = 0;
+        while(i < n)
+        {
+            
+            printf("Enter number %d:", i + 1);
+            scanf("%d", &number);
+            i++;
+
+            tmp = malloc(sizeof(struct node));
+            memset(tmp,0,sizeof(struct node));
+            
+            tmp->data = number;
+            add_data(&head, &tail, tmp);
+            tail = tmp;
+            
+            
+        }
+     
+    }
+
+    
+
+    
+*/
+    /*
+    tmp = malloc(sizeof(struct node));
+    memset(tmp,0,sizeof(struct node));
+    tmp->data = 34;
+    strcpy(tmp->name, "Duong Tam");
+    add_data(&head,&tail,tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(struct node));
+    memset(tmp,0,sizeof(struct node));
+    tmp->data = 45; 
+    strcpy(tmp->name, "Bi Bi Dong");
+    add_data(&head, &tail,tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(struct node));
+    memset(tmp, 0, sizeof(struct node));
+    tmp->data = 25;
+    strcpy(tmp->name, "Lieu Nhi Long");
+    add_data(&head, &tail, tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(struct node));
+    memset(tmp, 0, sizeof(struct node));
+    tmp->data = 9; visual 
+    strcpy(tmp->name, "Thien Nham Tuyet");
+    add_data(&head, &tail,tmp);
+    tail = tmp;
+
+    tmp = malloc(sizeof(struct node));
+    memset(tmp, 0, sizeof(struct node));
+    tmp->data = 10;
+    strcpy(tmp->name, "Bich Dao");
+    add_data(&head, &tail, tmp);
+    tail = tmp;
+    */
+
+    struct node* data = head;
+
+            while(NULL != data)
+            {
+
+                printf("id = %d\t name:%s\n", data->id,data->name);
+                data = data->next;
+                
+            }
+
+    return 0; 
+}
