@@ -1,0 +1,74 @@
+#include <stddef.h> 
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <sys/queue.h>
+
+struct entry {
+    int id;
+    char name[20];
+    CIRCLEQ_ENTRY(entry) entries;               //Queue
+};
+
+CIRCLEQ_HEAD(circlehead, entry);
+
+int main(void) 
+{
+
+    struct entry* n1, * n2, * n3, * np;
+    struct circlehead head;                     //Queue head
+
+
+
+    CIRCLEQ_INIT(&head);                        //Initialize the queue
+
+
+    n1 = malloc(sizeof(struct entry));     
+    memset(n1,0,sizeof(struct entry));
+    n1->id = 1;
+    strcpy(n1->name,"Wednesday");
+    CIRCLEQ_INSERT_HEAD(&head, n1, entries);
+
+
+    n1 = malloc(sizeof(struct entry));
+    memset(n1, 0, sizeof(struct entry));
+    n1->id = 2;
+    strcpy(n1->name, "Thursday");
+    CIRCLEQ_INSERT_TAIL(&head, n1, entries);
+
+
+    n2 = malloc(sizeof(struct entry));     
+    memset(n2, 0, sizeof(struct entry));
+    n2->id = 4;
+    strcpy(n2->name, "Friday");
+    CIRCLEQ_INSERT_AFTER(&head, n1, n2, entries);
+
+
+    n3 = malloc(sizeof(struct entry));
+    memset(n3, 0, sizeof(struct entry));
+    n3->id = 3;
+    strcpy(n3->name, "Saturday");
+    CIRCLEQ_INSERT_BEFORE(&head, n2, n3, entries);
+
+
+    //CIRCLEQ_REMOVE(&head, n2, entries);         //Deletion
+    //free(n2);
+    
+    
+    
+    CIRCLEQ_FOREACH(np, &head, entries)
+    printf("id = %d\t name:%s\n", np->id,np->name);
+    
+    //CIRCLEQ_FOREACH_REVERSE(np, &head, entries)
+    
+    
+    //Queue deletion
+    n1 = CIRCLEQ_FIRST(&head);
+    while (n1 != (void*)&head) {
+        n2 = CIRCLEQ_NEXT(n1, entries);
+        free(n1);
+        n1 = n2;
+    }
+
+    CIRCLEQ_INIT(&head);
+    exit(EXIT_SUCCESS);
+}
