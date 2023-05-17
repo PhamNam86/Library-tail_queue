@@ -1,0 +1,85 @@
+#include <stddef.h> 
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <sys/queue.h>
+
+struct entry {
+    int id;
+    char name[20];
+    TAILQ_ENTRY(entry) entries;             /* Tail queue. */
+};
+
+TAILQ_HEAD(tailhead, entry);
+
+int main(void) 
+{
+    struct entry* n1, * n2, * n3, *n4, * np;
+    struct tailhead head;                   
+
+
+    TAILQ_INIT(&head);                      
+
+
+    n1 = malloc(sizeof(struct entry)); 
+    memset(n1,0,sizeof(struct entry));
+    n1->id = 2;
+    strcpy(n1->name,"Gmail");
+    TAILQ_INSERT_HEAD(&head, n1, entries);
+
+
+    n2 = malloc(sizeof(struct entry));          //Insert at the tail
+    memset(n2, 0, sizeof(struct entry));
+    n2->id = 3;
+    strcpy(n2->name, "Facebook");      
+    TAILQ_INSERT_AFTER(&head,n1, n2, entries);
+
+
+    n3 = malloc(sizeof(struct entry));          //Insert after
+    memset(n3, 0, sizeof(struct entry));
+    n3->id = 1;
+    strcpy(n3->name, "Youtube");     
+    TAILQ_INSERT_BEFORE(n1, n3, entries);
+
+
+    n2 = malloc(sizeof(struct entry));          //Insert after
+    memset(n2, 0, sizeof(struct entry));
+    n2->id = 10;
+    strcpy(n2->name, "Zalo");
+    TAILQ_INSERT_BEFORE(n3, n2, entries);
+
+    n4 = malloc(sizeof(struct entry));          //Insert before
+    memset(n4, 0, sizeof(struct entry));
+    n4->id = 4;
+    strcpy(n4->name, "Zoom");
+    TAILQ_INSERT_TAIL(&head, n4, entries);
+    
+/*
+    TAILQ_REMOVE(&head, n3, entries);           //Deletion
+    free(n3);
+*/
+        
+        
+        //TAILQ_FOREACH(np, &head, entries)
+        
+    
+        // Reverse traversal
+        TAILQ_FOREACH_REVERSE(np, &head, tailhead, entries)
+        printf("id = %d\t name: %s\n", np->id,np->name);
+
+    
+    
+    
+    
+    /*TailQ Deletion.*/
+    n1 = TAILQ_FIRST(&head);
+    while (n1 != NULL) {
+        n2 = TAILQ_NEXT(n1, entries);
+        free(n1);
+        n1 = n2;
+    }
+
+    TAILQ_INIT(&head);
+
+
+    exit(EXIT_SUCCESS);
+}
